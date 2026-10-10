@@ -10,14 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EffectsRouteImport } from './routes/effects'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as PlanningRouteImport } from './routes/planning'
 import { Route as EffectsSlugRouteImport } from './routes/effects.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EffectsRoute = EffectsRouteImport.update({
@@ -35,6 +48,11 @@ const GalleryRoute = GalleryRouteImport.update({
   path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlanningRoute = PlanningRouteImport.update({
+  id: '/planning',
+  path: '/planning',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EffectsSlugRoute = EffectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -43,39 +61,76 @@ const EffectsSlugRoute = EffectsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/effects': typeof EffectsRouteWithChildren
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/planning': typeof PlanningRoute
   '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/effects': typeof EffectsRouteWithChildren
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/planning': typeof PlanningRoute
   '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/effects': typeof EffectsRouteWithChildren
   '/events': typeof EventsRoute
   '/gallery': typeof GalleryRoute
+  '/planning': typeof PlanningRoute
   '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/effects'
+    | '/events'
+    | '/gallery'
+    | '/planning'
+    | '/effects/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
-  id: '__root__' | '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/effects'
+    | '/events'
+    | '/gallery'
+    | '/planning'
+    | '/effects/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/effects'
+    | '/events'
+    | '/gallery'
+    | '/planning'
+    | '/effects/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   EffectsRoute: typeof EffectsRouteWithChildren
   EventsRoute: typeof EventsRoute
   GalleryRoute: typeof GalleryRoute
+  PlanningRoute: typeof PlanningRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +140,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/effects': {
@@ -106,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/gallery'
       fullPath: '/gallery'
       preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planning': {
+      id: '/planning'
+      path: '/planning'
+      fullPath: '/planning'
+      preLoaderRoute: typeof PlanningRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/effects/$slug': {
@@ -131,9 +207,12 @@ const EffectsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   EffectsRoute: EffectsRouteWithChildren,
   EventsRoute: EventsRoute,
   GalleryRoute: GalleryRoute,
+  PlanningRoute: PlanningRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
