@@ -303,7 +303,7 @@ function HomePage() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
               <a
-                href={`tel:${BUSINESS.phones[0].replace(/\s/g, "")}`}
+                href={`tel:${BUSINESS.phones[0]?.replace(/\s/g, "")}`}
                 className="inline-flex items-center gap-2 border border-foreground/25 px-8 py-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <Phone className="h-4 w-4" />
