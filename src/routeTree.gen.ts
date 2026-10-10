@@ -10,33 +10,72 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EffectsRouteImport } from './routes/effects'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as EffectsSlugRouteImport } from './routes/effects.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EffectsRoute = EffectsRouteImport.update({
+  id: '/effects',
+  path: '/effects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EffectsSlugRoute = EffectsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => EffectsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/effects': typeof EffectsRouteWithChildren
+  '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
+  '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/effects': typeof EffectsRouteWithChildren
+  '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
+  '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/effects': typeof EffectsRouteWithChildren
+  '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
+  '/effects/$slug': typeof EffectsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
+  id: '__root__' | '/' | '/effects' | '/events' | '/gallery' | '/effects/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EffectsRoute: typeof EffectsRouteWithChildren
+  EventsRoute: typeof EventsRoute
+  GalleryRoute: typeof GalleryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +87,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/effects': {
+      id: '/effects'
+      path: '/effects'
+      fullPath: '/effects'
+      preLoaderRoute: typeof EffectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/effects/$slug': {
+      id: '/effects/$slug'
+      path: '/$slug'
+      fullPath: '/effects/$slug'
+      preLoaderRoute: typeof EffectsSlugRouteImport
+      parentRoute: typeof EffectsRoute
+    }
   }
 }
 
+interface EffectsRouteChildren {
+  EffectsSlugRoute: typeof EffectsSlugRoute
+}
+
+const EffectsRouteChildren: EffectsRouteChildren = {
+  EffectsSlugRoute: EffectsSlugRoute,
+}
+
+const EffectsRouteWithChildren =
+  EffectsRoute._addFileChildren(EffectsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EffectsRoute: EffectsRouteWithChildren,
+  EventsRoute: EventsRoute,
+  GalleryRoute: GalleryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
